@@ -23,12 +23,10 @@ public:
     virtual void Init(bool fullscreenEnabled);
 
     virtual void Hide();
-    void HideQuick();
 
 private:
     void ExecuteTask(float f, long time_went);
     void OnClose(wxCloseEvent &event);
-    void OnMouseTap(wxMouseEvent &event);
 
     EState _state;
 
@@ -70,7 +68,6 @@ public:
     void UpdateTimeLabel(int msLeft);
 
 private:
-    void OnMouseTap(wxMouseEvent &);
     void OnClose(wxCloseEvent &event);
 
     wxStaticBitmap *_excerciseImg;

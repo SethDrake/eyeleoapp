@@ -78,8 +78,8 @@
 	<string id="settings_enable_strict_mode_tooltip" text="Строгий режим добавлен для тех, кому трудно отвлечься от компьютера. В этом режиме нельзя проигнорировать или отложить перерыв." />
 	<string id="settings_have_window_nearby" text="Рядом со мной есть окно" />
 	<string id="settings_have_window_nearby_tooltip" text="Если эта опция выключена, то упражнение 'посмотрите в окно' не будет предложено." />
-	<string id="settings_can_close_notifications_label" text="Возможность закрывать окна уведомлений правой кнопкой мыши" />
-	<string id="settings_can_close_notifications_tooltip" text="Если эта опция включена, то вы сможете закрывать окна уведомлений правой кнопкой мыши" />
+	<string id="settings_can_close_notifications_label" text="Закрывать уведомления о большом перерыве правой кнопкой мыши" />
+	<string id="settings_can_close_notifications_tooltip" text="Если эта опция включена, то вы сможете закрывать уведомления о приближающемся большом перерыве правой кнопкой мыши. Окна коротких перерывов так не закрываются." />
 	<string id="settings_can_enable_inactivity_tracking" text="Отслеживание активности мыши и клавиатуры" />
 	<string id="settings_can_enable_inactivity_tracking_tooltip" text="Если пользователь не использовал мышь или клавиатуру несколько минут, то считать, что он отдыхает" />
 	<string id="settings_save_and_close_button" text="Сохранить и Выйти" />

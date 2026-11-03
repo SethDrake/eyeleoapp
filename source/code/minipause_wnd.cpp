@@ -9,6 +9,7 @@
 #include <wx/event.h>
 
 BEGIN_EVENT_TABLE(MiniPauseWindow, wxFrame)
+EVT_CLOSE(MiniPauseWindow::OnClose)
 END_EVENT_TABLE()
 
 BEGIN_EVENT_TABLE(MiniPauseControls, wxFrame)
@@ -71,8 +72,6 @@ void MiniPauseWindow::Init(bool fullscreenEnabled) {
         wxRect displayRect = osCaps.displays[_displayInd].geometry;
         SetPosition(displayRect.GetPosition());
         SetSize(displayRect.GetSize());
-
-        Bind(wxEVT_RIGHT_UP, &MiniPauseWindow::OnMouseTap, this);
     }
 
     _state = MiniPauseWindow::STATE_SHOWING;
@@ -151,26 +150,11 @@ void MiniPauseWindow::ExecuteTask(float f, long wentMs) {
     }
 }
 
-void MiniPauseWindow::OnMouseTap(wxMouseEvent &) {
-    if (getApp()->GetCanCloseNotificationsSetting()) {
-        MiniPauseWindow *wnd = dynamic_cast<MiniPauseWindow *>(GetParent());
-        if (wnd)
-            wnd->HideQuick();
-    }
-}
-
-void MiniPauseWindow::HideQuick() {
-    _controlsWnd->Show(false);
-    _controlsWnd->Destroy();
-
-    wxFrame::Close();
-
-    g_TaskMgr->RemoveTasks(GetName());
-}
-
 void MiniPauseWindow::Hide() {
     if (_state == STATE_HIDING)
         return;
+
+    logging::msg(wxString::Format("MiniPauseWindow %d hiding, %d ms left", _displayInd, _timeLeft));
 
     _controlsWnd->Show(false);
     _controlsWnd->Destroy();
@@ -180,9 +164,16 @@ void MiniPauseWindow::Hide() {
 }
 
 void MiniPauseWindow::OnClose(wxCloseEvent &event) {
-    if (!_preventClosing) {
+    if (!_preventClosing || !event.CanVeto()) {
         event.Skip(true);
+        return;
     }
+
+    // someone else (another app, Alt+F4) asked to close the window: keep the break running
+    wchar_t cls[128] = {};
+    GetClassName(GetForegroundWindow(), cls, 128);
+    logging::msg(wxString::Format(L"MiniPauseWindow %d: external close request vetoed, foreground class='%s'", _displayInd, cls));
+    event.Veto();
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -273,12 +264,9 @@ void MiniPauseControls::Init(int displayInd, unsigned int showCount) {
 
     txt->SetSize(wxSize(250, 80));
 
-    ///
-    _excerciseImg->Bind(wxEVT_RIGHT_UP, &MiniPauseControls::OnMouseTap, this);
-    _txtTime->Bind(wxEVT_RIGHT_UP, &MiniPauseControls::OnMouseTap, this);
-    txt->Bind(wxEVT_RIGHT_UP, &MiniPauseControls::OnMouseTap, this);
-    title->Bind(wxEVT_RIGHT_UP, &MiniPauseControls::OnMouseTap, this);
-    Bind(wxEVT_RIGHT_UP, &MiniPauseControls::OnMouseTap, this);
+    // Short breaks can't be closed with the right mouse button: accidental clicks (the window pops up right
+    // under the cursor) were dismissing them. The 'can close notifications' setting applies to the long break
+    // notification only.
 }
 
 MiniPauseControls::~MiniPauseControls() {
@@ -298,14 +286,6 @@ void MiniPauseControls::UpdateTimeLabel(int msLeft) {
 
 void MiniPauseControls::Update() {
     _excerciseAnim->Update();
-}
-
-void MiniPauseControls::OnMouseTap(wxMouseEvent &) {
-    if (getApp()->GetCanCloseNotificationsSetting()) {
-        MiniPauseWindow *wnd = dynamic_cast<MiniPauseWindow *>(GetParent());
-        if (wnd)
-            wnd->HideQuick();
-    }
 }
 
 void MiniPauseControls::OnClose(wxCloseEvent &event) {

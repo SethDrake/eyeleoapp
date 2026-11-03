@@ -78,8 +78,8 @@
 	<string id="settings_enable_strict_mode_tooltip" text="The Strict mode is designed for those who find it really hard to tear away from the computer. In this mode you can't ignore or postpone the Long Break" />
 	<string id="settings_have_window_nearby" text="I have a window nearby" />
 	<string id="settings_have_window_nearby_tooltip" text="If this option is disabled, then the exercise 'look at the window' won't be shown." />
-	<string id="settings_can_close_notifications_label" text="Let me close notifications with the right mouse button" />
-	<string id="settings_can_close_notifications_tooltip" text="Enable this option if you want to have a possibility to close notification windows with the right mouse button" />
+	<string id="settings_can_close_notifications_label" text="Let me close long break notifications with the right mouse button" />
+	<string id="settings_can_close_notifications_tooltip" text="Enable this option if you want to close notifications about an upcoming long break with the right mouse button. Short break windows can't be closed this way." />
 	<string id="settings_can_enable_inactivity_tracking" text="Enable inactivity tracking" />
 	<string id="settings_can_enable_inactivity_tracking_tooltip" text="Tracks mouse/keyboard inactivity and automatically considers a rest taken" />
 	<string id="settings_save_and_close_button" text="Save and Close" />
