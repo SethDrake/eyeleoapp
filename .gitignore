@@ -24,3 +24,5 @@ libs/pugixml/scripts/vs2015
 source/project/Debug
 source/project/Release
 source/project/.vs
+# Third-party dependencies built locally
+/Dependencies/
