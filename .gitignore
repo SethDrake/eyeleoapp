@@ -14,6 +14,7 @@
 
 # Build folders
 cmake-*/
+build
 build-*/
 buildvs/
 libs/pugixml/build
